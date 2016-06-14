@@ -1,4 +1,4 @@
-﻿/*global define */
+/*global define */
 /*
  | Copyright 2014 Esri
  |
@@ -14,17 +14,15 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-   ({
-    scene: {
-      error: "يتعذر إنشاء المشهد"
-    },
-    panel: {
-      noslides: "لا توجد شرائح في مشهد الويب"
-    },
-    tooltips: {
-      play: "تشغيل - إيقاف مؤقت",
-      toggle: "تبديل"
-    }
-  })
-);
+define({
+  "scene": {
+    "error": "يتعذر إنشاء المشهد"
+  },
+  "panel": {
+    "noslides": "لا توجد شرائح في مشهد الويب"
+  },
+  "tooltips": {
+    "play": "تشغيل - إيقاف مؤقت",
+    "toggle": "تبديل"
+  }
+});

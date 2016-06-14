@@ -1,4 +1,4 @@
-﻿/*global define */
+/*global define */
 /*
  | Copyright 2014 Esri
  |
@@ -14,17 +14,15 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-   ({
-    scene: {
-      error: "Scene kan niet gemaakt worden"
-    },
-    panel: {
-      noslides: "Geen dia\'s in web scene"
-    },
-    tooltips: {
-      play: "Afspelen-Pauzeren",
-      toggle: "Wisselen"
-    }
-  })
-);
+define({
+  "scene": {
+    "error": "Scene kan niet gemaakt worden"
+  },
+  "panel": {
+    "noslides": "Geen dia's in web scene"
+  },
+  "tooltips": {
+    "play": "Afspelen-Pauzeren",
+    "toggle": "Wisselen"
+  }
+});

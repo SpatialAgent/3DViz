@@ -1,4 +1,4 @@
-﻿/*global define */
+/*global define */
 /*
  | Copyright 2014 Esri
  |
@@ -14,17 +14,15 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-   ({
-    scene: {
-      error: "Maisemaa ei voi luoda"
-    },
-    panel: {
-      noslides: "Web-maisemassa ei ole dioja"
-    },
-    tooltips: {
-      play: "Toista/tauko",
-      toggle: "Vaihda"
-    }
-  })
-);
+define({
+  "scene": {
+    "error": "Maisemaa ei voi luoda"
+  },
+  "panel": {
+    "noslides": "Web-maisemassa ei ole dioja"
+  },
+  "tooltips": {
+    "play": "Toista/tauko",
+    "toggle": "Vaihda"
+  }
+});

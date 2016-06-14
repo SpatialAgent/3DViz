@@ -43,11 +43,12 @@ define([
       console.log("setting color");
       var color = this.config.color;
       var colorText = this.config.colorText;
-      // if(colorText === "") {
-      //   colorText = this._getContrastYIQ(color);
-      // }
-      // this.config.colorText = colorText;
-      domStyle.set(win.body(), "color", color);
+      if(colorText === "") {
+        colorText = this._getContrastYIQ(color);
+      }
+      this.config.colorText = colorText;
+      domStyle.set("panelTop", "color", color);
+      domStyle.set("panelBottom", "color", color);
       domStyle.set("panelText", "color", color);
       domStyle.set("btnToggle", "backgroundColor", color);
       domStyle.set("btnPlay", "backgroundColor", color);

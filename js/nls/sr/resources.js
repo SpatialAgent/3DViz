@@ -16,13 +16,13 @@
  */
 define({
   "scene": {
-    "error": "Δεν είναι δυνατή η δημιουργία 3D προβολής"
+    "error": "Kreiranje scene nije moguće"
   },
   "panel": {
-    "noslides": "Δεν υπάρχουν διαφάνειες στην Web 3D Προβολή"
+    "noslides": "Nema slajdova u veb sceni"
   },
   "tooltips": {
-    "play": "Αναπαραγωγή-Παύση",
-    "toggle": "Εναλλαγή"
+    "play": "Reprodukcija-pauza",
+    "toggle": "Preklopi"
   }
 });
