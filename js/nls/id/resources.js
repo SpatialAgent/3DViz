@@ -16,13 +16,13 @@
  */
 define({
   "scene": {
-    "error": "Nije moguće stvoriti scenu"
+    "error": "Tidak dapat membuat adegan"
   },
   "panel": {
-    "noslides": "Nema slajdova na web-sceni"
+    "noslides": "Tidak ada slide di adegan web"
   },
   "tooltips": {
-    "play": "Reprodukcija - pauza",
-    "toggle": "Uključi/isključi"
+    "play": "Putar-Jeda",
+    "toggle": "Hidupkan/matikan"
   }
 });

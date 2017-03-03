@@ -16,13 +16,13 @@
  */
 define({
   "scene": {
-    "error": "Nije moguće stvoriti scenu"
+    "error": "दृश्य बनाने में असमर्थ"
   },
   "panel": {
-    "noslides": "Nema slajdova na web-sceni"
+    "noslides": "वेब दृश्य में कोई स्लाइड नहीं है"
   },
   "tooltips": {
-    "play": "Reprodukcija - pauza",
-    "toggle": "Uključi/isključi"
+    "play": "चलाएं-विराम",
+    "toggle": "टॉगल करें"
   }
 });
