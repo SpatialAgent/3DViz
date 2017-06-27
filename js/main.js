@@ -199,6 +199,7 @@ define([
         }
 
         this.view = new SceneView(viewProperties);
+        this.view.popup.closeOnViewChangeEnabled = true;
 
         this.view.then(lang.hitch(this, function(response) {
           this.view.on("click", lang.hitch(this, this._viewClicked));
@@ -492,7 +493,7 @@ define([
       query.outSpatialReference = this.view.spatialReference;
       query.where = (this.vizLayer.expr) ? this.vizLayer.expr : "1=1";
       queryTask.execute(query).then(lang.hitch(this, function(results) {
-        console.log(results);
+        //console.log(results);
         if (this.config.vizType === "Polygon Extrusion" && results.geometryType !== "polygon") {
           console.log("Polygon Extrusion is only supported with polygon geometries");
           this.config.vizType = "Point Extrusion";
@@ -892,7 +893,7 @@ define([
       if (ht <= 0) {
         ht = 500;
       }
-      var sym = new LabelSymbol3D({
+      var sym = new PointSymbol3D({
         symbolLayers: [new TextSymbol3DLayer({
           material: { 
             color: [255, 255, 255] 
@@ -903,7 +904,6 @@ define([
       });
       var pt = new Point(geom.x, geom.y, ht, geom.spatialReference);
       var graLbl = new Graphic(pt, sym, {});
-      console.log(graLbl);
       this.labelsLayer.add(graLbl);
       // var symTxt = this._getLabel(label);
       // var pt = new Point(geom.x, geom.y, ht, geom.spatialReference);
@@ -1009,7 +1009,6 @@ define([
       if(this.renObjects.length > 0) {
         var renObj = this.renObjects[0];
         var gra = renObj.hitTest(evt);
-        console.log(gra);
         if (gra) {
           var index = gra.attributes.index;
           this._selectGraphic(index);

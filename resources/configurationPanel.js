@@ -1,19 +1,19 @@
 {
   "configurationSettings": [{
-    "category": "<b>Scene</b>",
+    "category": "<b>General</b>",
     "fields": [{
       "type": "webscene",
       "label": "Select a scene"
-    }]
-  }, {
-    "category": "<b>General</b>",
-    "fields": [{
+    }, {
       "type": "string",
       "fieldName": "title",
       "label": "Title",
       "tooltip": "Title",
       "placeHolder": "Title"
-    }, {
+    }]
+  }, {
+    "category": "<b>Theme</b>",
+    "fields": [{
       "type": "boolean",
       "fieldName": "cycleColors",
       "label": "Change color for each visualization",
