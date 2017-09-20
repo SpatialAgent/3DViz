@@ -493,7 +493,7 @@ define([
       query.outSpatialReference = this.view.spatialReference;
       query.where = (this.vizLayer.expr) ? this.vizLayer.expr : "1=1";
       queryTask.execute(query).then(lang.hitch(this, function(results) {
-        //console.log(results);
+        console.log(results);
         if (this.config.vizType === "Polygon Extrusion" && results.geometryType !== "polygon") {
           console.log("Polygon Extrusion is only supported with polygon geometries");
           this.config.vizType = "Point Extrusion";

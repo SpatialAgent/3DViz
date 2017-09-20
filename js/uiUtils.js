@@ -40,6 +40,7 @@ define([
     },
 
     setColor: function() {
+      console.log("setting color");
       var color = this.config.color;
       var colorText = this.config.colorText;
       if(colorText === "") {
