@@ -16,17 +16,17 @@
  */
 define({
   "scene": {
-    "error": "לא ניתן ליצור סצנה",
+    "error": "Nem sikerült létrehozni a 3D térképet",
     "licenseError": {
-      "message": "החשבון שלך אינו מורשה להשתמש באפליקציות הניתנות להגדרה שאינן ציבוריות. בקש ממנהל המערכת בארגון שלך להקצות לך סוג משתמש שכולל את Essential Apps או רישיון הרחבה ל-Essential Apps.",
-      "title": "ללא רישיון"
+      "message": "Az Ön fiókjának licence nem terjed ki a nem nyilvános konfigurálható alkalmazásokra. Igényelje a szervezete adminisztrátorától, hogy rendeljen Önhöz olyan felhasználótípust, amely tartalmazza az alapvető alkalmazásokat, vagy egy kiegészítő alapvető alkalmazásokra vonatkozó licencet.",
+      "title": "Nincs licence"
     }
   },
   "panel": {
-    "noslides": "אין שקפים בסצינת אינטרנט"
+    "noslides": "Nincs dia a web 3D térképen"
   },
   "tooltips": {
-    "play": "נגן-הפסק",
-    "toggle": "החלף"
+    "play": "Lejátszás/szünet",
+    "toggle": "Választókapcsoló"
   }
 });

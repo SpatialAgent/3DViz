@@ -55,7 +55,7 @@ body {
 
 /* ESRI UI COMPONENTS */
 
-.esri-zoom .esri-widget-button {
+.esri-zoom .esri-widget--button {
   width: 26px;
   height: 26px;
   line-height: 26px;
@@ -75,7 +75,7 @@ body {
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.4);
 }
 
-.reverse .esri-zoom .esri-widget-button {
+.reverse .esri-zoom .esri-widget--button {
   background-color: #333333;
   color: #fff;
 }

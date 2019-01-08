@@ -16,17 +16,17 @@
  */
 define({
   "scene": {
-    "error": "לא ניתן ליצור סצנה",
+    "error": "No es pot crear l'escena",
     "licenseError": {
-      "message": "החשבון שלך אינו מורשה להשתמש באפליקציות הניתנות להגדרה שאינן ציבוריות. בקש ממנהל המערכת בארגון שלך להקצות לך סוג משתמש שכולל את Essential Apps או רישיון הרחבה ל-Essential Apps.",
-      "title": "ללא רישיון"
+      "message": "El vostre compte no té llicència per utilitzar aplicacions configurables que no siguin públiques. Demaneu a l'administrador de l'organització que us assigni un tipus d'usuari que inclogui les aplicacions bàsiques o una llicència d'aplicacions bàsiques de complement.",
+      "title": "Sense llicència"
     }
   },
   "panel": {
-    "noslides": "אין שקפים בסצינת אינטרנט"
+    "noslides": "No hi ha cap diapositiva a l'escena web"
   },
   "tooltips": {
-    "play": "נגן-הפסק",
-    "toggle": "החלף"
+    "play": "Reprodueix/atura temporalment",
+    "toggle": "Activa/desactiva"
   }
 });

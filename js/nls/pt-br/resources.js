@@ -16,7 +16,11 @@
  */
 define({
   "scene": {
-    "error": "Não foi possível criar a cena"
+    "error": "Não foi possível criar a cena",
+    "licenseError": {
+      "message": "Sua conta não está licenciada para utilizar Aplicativos Configuráveis que não sejam públicos. Solicite ao administrador da sua organização que lhe atribua um tipo de usuário que inclua os Aplicativos Fundamentais ou uma licença complementar dos Aplicativos Fundamentais.",
+      "title": "Não Licenciado"
+    }
   },
   "panel": {
     "noslides": "Nenhum slide na cena da web"

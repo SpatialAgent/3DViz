@@ -20,7 +20,7 @@ define({
   //default web scene, default app color theme and more. These values can be overwritten by template configuration settings and url parameters.
   "appid": "",
   "webscene": "e21786a657814675bd39e091d6e395cd", //"95e7c01be214477e9fdb6a7b65c0c47d", //"203eb0c74988469e90f9965c65a800a4",
-  "oauthappid": null, //"AFTKRmv16wj14N3z",
+  "oauthappid": "arcgisWebApps", //"AFTKRmv16wj14N3z",
   //Enter the url to the proxy if needed by the application. See the 'Using the proxy page' help topic for details
   //http://developers.arcgis.com/en/javascript/jshelp/ags_proxy.html
   "proxyurl": "",

@@ -16,7 +16,11 @@
  */
 define({
   "scene": {
-    "error": "Nevarēja izveidot scēnu"
+    "error": "Nevarēja izveidot scēnu",
+    "licenseError": {
+      "message": "Jūsu kontam nav licences, lai izmantotu konfigurējamās lietotnes, kas nav publiskas. Pieprasiet savas organizācijas administratoram piešķirt jums lietotāja veidu, kurā iekļauts lietotņu komplekts Essential Apps vai papildinājumlietotņu Essential Apps licence.",
+      "title": "Nav licences"
+    }
   },
   "panel": {
     "noslides": "Web scēnā nav slaidi"

@@ -68,7 +68,7 @@ define([
   "lib/Pulse.min",
 
   "dojo/domReady!"
-], function(
+], function (
   declare, array, lang,
   Deferred,
   dom, domAttr, domClass, domConstruct, domStyle,
@@ -95,7 +95,7 @@ define([
     vizCards: null,
     renObjects: [],
 
-    startup: function(config) {
+    startup: function (config) {
       var promise;
       var error;
       // config will contain application and user defined info for the template such as i18n strings, the web map id
@@ -107,15 +107,6 @@ define([
           this.reportError(error);
           return;
         }
-
-        // temp fix for scene layer
-        var regex = /\/SceneServer\/layers\/\d+\/?$/;
-        esriRequest.setRequestPreCallback(function(request) {
-          if (request && typeof request === "object" && !request.content && regex.test(request.url)) {
-            request.content = { f: "json" };
-          }
-          return request;
-        });
 
         this.config = config;
         this.uiUtils = new uiUtils();
@@ -131,7 +122,7 @@ define([
       return promise;
     },
 
-    reportError: function(error) {
+    reportError: function (error) {
       // remove loading class from body
       domClass.remove(document.body, "app-loading");
       domClass.add(document.body, "app-error");
@@ -152,7 +143,7 @@ define([
     },
 
     // create a scene based on the input web scene id
-    _createWebScene: function() {
+    _createWebScene: function () {
       // Create a scene from json will be coming.
       // for now scene from id only.
       // if(this.config.itemInfo){
@@ -168,7 +159,17 @@ define([
         })
       });
 
-      this.scene.load().then(lang.hitch(this, function(){
+      this.scene.load().then(lang.hitch(this, function () {
+
+        if (this.config.layerMixins) {
+          this.config.layerMixins.forEach(lang.hitch(this, function (proxy) {
+            this.scene.layers.forEach(function (layer) {
+              if (layer.url === proxy.url) {
+                layer.url = proxy.mixin.url;
+              }
+            });
+          }));
+        }
 
         var viewProperties = {
           map: this.scene,
@@ -201,7 +202,7 @@ define([
         this.view = new SceneView(viewProperties);
         this.view.popup.closeOnViewChangeEnabled = true;
 
-        this.view.then(lang.hitch(this, function(response) {
+        this.view.when(lang.hitch(this, function (response) {
           this.view.on("click", lang.hitch(this, this._viewClicked));
           this._initApp();
           //setTimeout(lang.hitch(this, this._initApp), 3000);
@@ -213,7 +214,7 @@ define([
     },
 
     // set camera viewpoint
-    _setCameraViewpoint: function() {
+    _setCameraViewpoint: function () {
       var camera;
       var viewpointParamString = null;
       if (this.config.viewpoint) {
@@ -276,7 +277,7 @@ define([
     },
 
     // init app
-    _initApp: function() {
+    _initApp: function () {
       this._setEnvironment();
       this.uiUtils.setColor();
       this._setTitles();
@@ -286,7 +287,7 @@ define([
     },
 
     // set environment
-    _setEnvironment: function() {
+    _setEnvironment: function () {
       var aEnabled = false;
       var sEnabled = false;
       if (this.config.atmosphere === true) {
@@ -302,13 +303,13 @@ define([
     },
 
     // set titles
-    _setTitles: function() {
+    _setTitles: function () {
       document.title = this.config.title || this.scene.portalItem.title;
       dom.byId("panelTitle").innerHTML = this.config.title || this.scene.portalItem.title;
     },
 
     // init ui
-    _initUI: function() {
+    _initUI: function () {
       var options = {
         view: this.view,
         showPercent: this.config.showPercent
@@ -325,7 +326,7 @@ define([
     },
 
     // toggle bottom
-    _toggleBottom: function() {
+    _toggleBottom: function () {
       domClass.toggle("panelBottom", "opened");
     },
 
@@ -335,18 +336,19 @@ define([
     // **
 
     // init viz
-    _initViz: function() {
+    _initViz: function () {
       var def = this._processLayers();
-      def.then(lang.hitch(this, function(lyr) {
+      def.then(lang.hitch(this, function (lyr) {
         if (lyr) {
-          this._initVizLayer(lyr);
+          lyr.when(lang.hitch(this, this._initVizLayer));
+          //this._initVizLayer(lyr);
         } else {
           console.log("No feature layer in web scene.");
         }
       }));
     },
 
-    _processLayers: function() {
+    _processLayers: function () {
       var def = new Deferred();
       var map = this.view.map;
       var layers = map.layers;
@@ -359,7 +361,7 @@ define([
       // TO DO: Check how layer in config is being passed
       if (this.config.vizLayer) {
         var lyr = map.findLayerById(this.config.vizLayer.id);
-        lyr.then(function(vizLyr) {
+        lyr.then(function (vizLyr) {
           def.resolve(vizLyr);
           return;
         });
@@ -369,7 +371,7 @@ define([
           var id = layers.getItemAt(i).id;
           promises.push(map.findLayerById(id));
         }
-        all(promises).then(function(results) {
+        all(promises).then(function (results) {
           var vizLyr;
           for (i = 0; i < results.length; i++) {
             var lyr = results[i];
@@ -398,7 +400,7 @@ define([
     },
 
     // init viz layer
-    _initVizLayer: function(lyr) {
+    _initVizLayer: function (lyr) {
       var map = this.view.map;
       var offset = 30;
       if (this.scene.initialViewProperties.viewingMode === "local") {
@@ -434,7 +436,7 @@ define([
       //var validTypes = "esriFieldTypeSmallInteger,esriFieldTypeInteger,esriFieldTypeSingle,esriFieldTypeDouble";
       var validTypes = "small-integer,integer,single,double";
       var invalidNames = "fid,objectid,x,y,latitude,longitude";
-      array.forEach(lyr.fields, lang.hitch(this, function(f) {
+      array.forEach(lyr.fields, lang.hitch(this, function (f) {
         var fldInfo = this._getFieldInfo(f.name);
         var vis = true;
         if (fldInfo && !fldInfo.visible) {
@@ -483,7 +485,7 @@ define([
     },
 
     // query viz data
-    _queryVizData: function() {
+    _queryVizData: function () {
       var queryTask = new QueryTask({
         url: this.vizLayer.url
       });
@@ -492,7 +494,7 @@ define([
       query.outFields = ["*"];
       query.outSpatialReference = this.view.spatialReference;
       query.where = (this.vizLayer.expr) ? this.vizLayer.expr : "1=1";
-      queryTask.execute(query).then(lang.hitch(this, function(results) {
+      queryTask.execute(query).then(lang.hitch(this, function (results) {
         console.log(results);
         if (this.config.vizType === "Polygon Extrusion" && results.geometryType !== "polygon") {
           console.log("Polygon Extrusion is only supported with polygon geometries");
@@ -506,9 +508,9 @@ define([
     },
 
     // process feature geometries
-    _processFeatureGeometries: function(features) {
+    _processFeatureGeometries: function (features) {
       var ptFeatures = [];
-      array.forEach(features, function(feature) {
+      array.forEach(features, function (feature) {
         var geom = feature.geometry;
         if (geom) {
           var pt = geom;
@@ -534,7 +536,7 @@ define([
     },
 
     // init viz pages
-    _initVizPages: function() {
+    _initVizPages: function () {
       var list = dom.byId("pages");
       list.innerHTML = "";
       if (this.vizLayer.fields.length > 1) {
@@ -554,10 +556,10 @@ define([
     },
 
     // get field info
-    _getFieldInfo: function(fld) {
+    _getFieldInfo: function (fld) {
       var fldInfo = null;
       if (this.vizLayer.popupTemplate && this.vizLayer.popupTemplate.fieldInfos.length > 0) {
-        array.some(this.vizLayer.popupTemplate.fieldInfos, function(f) {
+        array.some(this.vizLayer.popupTemplate.fieldInfos, function (f) {
           if (f.fieldName === fld) {
             fldInfo = f;
             return true;
@@ -568,7 +570,7 @@ define([
     },
 
     // get field alias
-    _getFieldAlias: function(fld) {
+    _getFieldAlias: function (fld) {
       var alias = fld;
       var fldInfo = this._getFieldInfo(fld);
       if (fldInfo) {
@@ -578,7 +580,7 @@ define([
     },
 
     // set viz color
-    _setVizColor: function() {
+    _setVizColor: function () {
       if (this.config.cycleColors) {
         var num = this.vizLayer.page;
         var cNum = num - (Math.floor(num / this.config.colors.length) * this.config.colors.length);
@@ -589,7 +591,7 @@ define([
     },
 
     // set viz page
-    _setVizPage: function(num) {
+    _setVizPage: function (num) {
       var oldId = "page" + this.vizLayer.page;
       var newId = "page" + num;
       if (dom.byId(oldId)) {
@@ -604,7 +606,7 @@ define([
     },
 
     // toggle viz timer
-    _toggleVizTimer: function() {
+    _toggleVizTimer: function () {
       if (this.playing) {
         this._stopVizTimer();
       } else {
@@ -613,7 +615,7 @@ define([
     },
 
     // start viz timer
-    _startVizTimer: function() {
+    _startVizTimer: function () {
       this._stopVizTimer();
       this.vizTimer = setInterval(lang.hitch(this, this._doViz), this.config.interval);
       if (this.view.viewingMode === "global") {
@@ -624,7 +626,7 @@ define([
     },
 
     // stop viz timer
-    _stopVizTimer: function() {
+    _stopVizTimer: function () {
       if (this.vizTimer) {
         clearInterval(this.vizTimer);
         this.vizTimer = null;
@@ -635,7 +637,7 @@ define([
     },
 
     // do viz
-    _doViz: function() {
+    _doViz: function () {
       if (!this.vizLayer) {
         return;
       }
@@ -647,14 +649,14 @@ define([
     },
 
     // process viz
-    _processViz: function() {
+    _processViz: function () {
 
       var vizFld = this.vizLayer.fields[this.vizLayer.page].name;
       var displayFld = this.vizLayer.displayField;
       var alias = this._getFieldAlias(vizFld);
       dom.byId("panelSubtitle").innerHTML = alias;
 
-      var filteredFeatures = array.filter(this.vizLayer.features, function(item) {
+      var filteredFeatures = array.filter(this.vizLayer.features, function (item) {
         if (item.attributes[vizFld]) {
           return true;
         } else {
@@ -663,7 +665,7 @@ define([
       });
 
       if (filteredFeatures.length > 0) {
-        filteredFeatures.sort(function(a, b) {
+        filteredFeatures.sort(function (a, b) {
           if (a.attributes[vizFld] < b.attributes[vizFld]) {
             return -1;
           }
@@ -673,7 +675,7 @@ define([
           return 0;
         });
         filteredFeatures.reverse();
-        array.forEach(filteredFeatures, function(f, index) {
+        array.forEach(filteredFeatures, function (f, index) {
           f.attributes.index = index;
         });
         this.vizLayer.max = filteredFeatures[0].attributes[vizFld];
@@ -697,7 +699,7 @@ define([
     },
 
     // process feature layer
-    _processFeatureLayer: function(options) {
+    _processFeatureLayer: function (options) {
       var map = this.view.map;
       if (this.featureLayer) {
         map.remove(this.featureLayer);
@@ -719,7 +721,7 @@ define([
     },
 
     // get renderer
-    _getRenderer: function(options) {
+    _getRenderer: function (options) {
       var maxSize = this.config.maxZ;
       var max = this.vizLayer.max;
       //var min = Math.floor(maxSize * 0.005);
@@ -769,7 +771,7 @@ define([
 
 
     // process features
-    _processFeatures: function(options) {
+    _processFeatures: function (options) {
       this.labelsLayer.removeAll();
       this._clearRenderers();
       var features = options.features;
@@ -785,7 +787,7 @@ define([
       var max = this.vizLayer.max;
       var min = Math.floor(maxSize * 0.005);
       var locations = [];
-      array.forEach(options.features, lang.hitch(this, function(feature) {
+      array.forEach(options.features, lang.hitch(this, function (feature) {
         var geom = feature.geometry;
         var attr = feature.attributes;
         var value = attr[options.vizField];
@@ -813,14 +815,14 @@ define([
     },
 
     // get color
-    _getColor: function() {
+    _getColor: function () {
       var rgba = Color.fromString(this.config.color).toRgb();
       rgba.push(0.9);
       return rgba;
     },
 
     // get symbol
-    _getSymbol: function(height, color) {
+    _getSymbol: function (height, color) {
       var sym = new PointSymbol3D({
         symbolLayers: [
           new ObjectSymbol3DLayer({
@@ -839,7 +841,7 @@ define([
     },
 
     // card clicked
-    _cardClicked: function(obj) {
+    _cardClicked: function (obj) {
       if (obj.data) {
         var index = obj.data.attributes.index;
         this._selectGraphic(index);
@@ -862,10 +864,10 @@ define([
     },
 
     // view clicked
-    _viewClicked: function(evt) {
+    _viewClicked: function (evt) {
       if (this.config.vizType === "Polygon Extrusion") {
         var fld = this.vizLayer.featureSet.objectIdFieldName;
-        this.view.hitTest(evt.screenPoint).then(lang.hitch(this, function(obj){
+        this.view.hitTest(evt.screenPoint).then(lang.hitch(this, function (obj) {
           if (obj.results.length > 0 && obj.results[0].graphic) {
             var oid = obj.results[0].graphic.attributes[fld];
             var gra = this.vizCards.findFeature(fld, oid);
@@ -882,7 +884,7 @@ define([
     },
 
     // select graphic
-    _selectGraphic: function(index) {
+    _selectGraphic: function (index) {
       this.labelsLayer.removeAll();
       var gra = this.vizCards.getFeature(index);
       var geom = gra.geometry;
@@ -895,8 +897,8 @@ define([
       }
       var sym = new PointSymbol3D({
         symbolLayers: [new TextSymbol3DLayer({
-          material: { 
-            color: [255, 255, 255] 
+          material: {
+            color: [255, 255, 255]
           },
           text: label,
           size: 10
@@ -937,14 +939,14 @@ define([
     // **
 
     // start spin
-    _startSpin: function() {
+    _startSpin: function () {
       this._stopSpin();
       this._doSpin();
       this.spinTimer = setInterval(lang.hitch(this, this._doSpin), 100);
     },
 
     // stop spin
-    _stopSpin: function() {
+    _stopSpin: function () {
       if (this.spinTimer) {
         clearInterval(this.spinTimer);
         this.spinTimer = null;
@@ -952,7 +954,7 @@ define([
     },
 
     // do spin
-    _doSpin: function() {
+    _doSpin: function () {
       var pos = this.view.camera.position;
       var posGeo = pos;
       if (pos.spatialReference.isWebMercator) {
@@ -979,7 +981,7 @@ define([
     // External Renderers
     // **
 
-    _addRenderer: function(locations) {
+    _addRenderer: function (locations) {
       var params = {
         loop: false,
         color: this.config.color
@@ -998,15 +1000,15 @@ define([
       this.renObjects.push(obj);
     },
 
-    _clearRenderers: function() {
-      array.forEach(this.renObjects, lang.hitch(this, function(obj){
+    _clearRenderers: function () {
+      array.forEach(this.renObjects, lang.hitch(this, function (obj) {
         externalRenderers.remove(this.view, obj);
       }));
       this.renObjects = [];
     },
 
-    _selectRendererObj: function(evt) {
-      if(this.renObjects.length > 0) {
+    _selectRendererObj: function (evt) {
+      if (this.renObjects.length > 0) {
         var renObj = this.renObjects[0];
         var gra = renObj.hitTest(evt);
         if (gra) {

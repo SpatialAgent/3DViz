@@ -16,7 +16,11 @@
  */
 define({
   "scene": {
-    "error": "Nie można utworzyć sceny"
+    "error": "Nie można utworzyć sceny",
+    "licenseError": {
+      "message": "Twoje konto nie jest licencjonowane do korzystania z aplikacji konfigurowalnych, które nie są publiczne. Poproś administratora instytucji o przypisanie typu użytkownika, który obejmuje licencję na kluczowe aplikacje lub licencję na kluczowe aplikacje dodatkowe.",
+      "title": "Nie licencjonowano"
+    }
   },
   "panel": {
     "noslides": "Brak slajdów w scenie internetowej"

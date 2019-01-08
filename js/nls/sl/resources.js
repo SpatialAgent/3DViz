@@ -16,17 +16,17 @@
  */
 define({
   "scene": {
-    "error": "לא ניתן ליצור סצנה",
+    "error": "3D-prizora ni mogoče ustvariti",
     "licenseError": {
-      "message": "החשבון שלך אינו מורשה להשתמש באפליקציות הניתנות להגדרה שאינן ציבוריות. בקש ממנהל המערכת בארגון שלך להקצות לך סוג משתמש שכולל את Essential Apps או רישיון הרחבה ל-Essential Apps.",
-      "title": "ללא רישיון"
+      "message": "Vaš račun ni licenciran za uporabo konfigurabilnih aplikacij, ki niso javne. Prosite administratorja v vaši organizaciji, da vam dodeli tip uporabnika, ki vsebuje aplikacije Essential Apps ali licenco za dodatne aplikacije Essential Apps.",
+      "title": "Brez licence"
     }
   },
   "panel": {
-    "noslides": "אין שקפים בסצינת אינטרנט"
+    "noslides": "V spletnem 3D-prizoru ni drsnic"
   },
   "tooltips": {
-    "play": "נגן-הפסק",
-    "toggle": "החלף"
+    "play": "Predvajaj-Začasno ustavi",
+    "toggle": "Preklopi"
   }
 });
