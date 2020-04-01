@@ -125,7 +125,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // default value is arcgis.com.
       this._initializeApplication();
       // check if signed in. Once we know if we're signed in, we can get appConfig, orgConfig and create a portal if needed.
-      this._checkSignIn().always(lang.hitch(this, function (response) {
+      this._checkSignIn().then(lang.hitch(this, function (response) {
 
         // execute these tasks async
         all({
@@ -300,13 +300,17 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // check app access or signed-in status
       if (this.config.oauthappid && this.templateConfig.esriEnvironment) {
         signedIn = esriId.checkAppAccess(this.config.sharinghost + "/sharing", this.config.oauthappid);
-        signedIn.always(function (response) {
+        signedIn.then(function (response) {
+          deferred.resolve(response);
+        }, function (response) {
           deferred.resolve(response);
         });
       } else {
         signedIn = esriId.checkSignInStatus(this.config.sharinghost + "/sharing");
         // resolve regardless of signed in or not.
-        signedIn.always(function (response) {
+        signedIn.then(function (response) {
+          deferred.resolve(response);
+        }, function (response) {
           deferred.resolve(response);
         });
       }

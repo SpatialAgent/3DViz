@@ -173,7 +173,11 @@ define([
 
         var viewProperties = {
           map: this.scene,
-          container: "panelView"
+          container: "panelView",
+          environment: {
+            atmosphereEnabled: (this.config.atmosphere === true) ? true : false,
+            starsEnabled: (this.config.stars === true) ? true: false
+          }
         };
         if (this.scene.initialViewProperties.viewingMode === "local") {
           viewProperties.constraints = {
@@ -278,7 +282,7 @@ define([
 
     // init app
     _initApp: function () {
-      this._setEnvironment();
+      //this._setEnvironment();
       this.uiUtils.setColor();
       this._setTitles();
       this._initUI();
@@ -495,7 +499,7 @@ define([
       query.outSpatialReference = this.view.spatialReference;
       query.where = (this.vizLayer.expr) ? this.vizLayer.expr : "1=1";
       queryTask.execute(query).then(lang.hitch(this, function (results) {
-        console.log(results);
+        //console.log(results);
         if (this.config.vizType === "Polygon Extrusion" && results.geometryType !== "polygon") {
           console.log("Polygon Extrusion is only supported with polygon geometries");
           this.config.vizType = "Point Extrusion";
@@ -955,26 +959,33 @@ define([
 
     // do spin
     _doSpin: function () {
-      var pos = this.view.camera.position;
-      var posGeo = pos;
-      if (pos.spatialReference.isWebMercator) {
-        posGeo = webMercatorUtils.webMercatorToGeographic(pos);
+      if (!this.view.interacting) {
+        var pos = this.view.camera.position;
+        var posGeo = pos;
+        if (pos.spatialReference.isWebMercator) {
+          posGeo = webMercatorUtils.webMercatorToGeographic(pos);
+        }
+        var posX = posGeo.x - 1;
+        if (posX <= -180) {
+          posX = 179;
+        }
+        var posZ = pos.z;
+        if (posZ < 8000000) {
+          posZ = 8000000;
+        }
+        // this.view.goTo({
+        //   position: [posX, 0, posZ],
+        //   tilt: 0,
+        //   heading: 0
+        // }, {
+        //   maxDuration: 900
+        // });
+        var camera = this.view.camera.clone();
+        camera.position.latitude = 0;
+        camera.position.longitude = posX;
+        camera.position.z = posZ;
+        this.view.camera = camera;
       }
-      var posX = posGeo.x - 1;
-      if (posX <= -180) {
-        posX = 179;
-      }
-      var posZ = pos.z;
-      if (posZ < 8000000) {
-        posZ = 8000000;
-      }
-      this.view.goTo({
-        position: [posX, 0, posZ],
-        tilt: 0,
-        heading: 0
-      }, {
-        maxDuration: 900
-      });
     },
 
     // **
